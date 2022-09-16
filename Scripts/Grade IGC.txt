@@ -1,0 +1,8 @@
+#### Para Zona 23, já criado e deu certo!
+CreateFishnet E:\GIS_Outros\Cartas_Topográficas_IGC\IGC_GeoData\Grade_IGC.gdb\Teste "-360000 7154000" "-360000 7154010" 1000 1000 4000 2000 # LABELS E:\GIS_Outros\Cartas_Topográficas_IGC\IGC_GeoData\Grade_IGC.gdb\Teste_label "-360000 7154000 604800 7816200"
+
+#### Para Zona 22
+Start Time: Wed Sep 14 15:17:26 2016
+CreateFishnet E:\SIG_Testes\IGC_10k\Geodata\Geo_IGC.mdb\Grade22S\Grade22 "0 7412000" "0 7412010" 1000 1000 4000 2000 # LABELS "0 7412000 840000 7476000" POLYLINE
+
+

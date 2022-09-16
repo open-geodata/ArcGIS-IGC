@@ -23,30 +23,41 @@ sys.setdefaultencoding('utf8')
 
 # -------------------------------------------------------------------------------------------------------
 # Variável de Input
-geodatabase = r'E:\SIG_MP_BasesCartograficas\SP_IGC_10k\Geodata\Geo_IGC.mdb'
+geodatabase = r'E:\SIG_MP_BasesCartograficas\SP_IGC\Geodata\Geo_IGC.mdb'
 in_FeatureDataSet = 'Vetorizacao'
 out_FeatureDataSet = 'Resultados'
 
 # APPs em Metros
-APP_Nascentes = 50                      # Inciso I, Artigo 3º, Resolução Conama nº 302/02
-APP_CursoDagua = 30                     # Alínea 'a', Inciso I, Artigo 3º, Resolução Conama nº 302/02
-APP_RioMaior10m = 0                     # Alínea 'b', 'c', 'd', e 'e', Inciso I, Artigo 3º, Resolução Conama nº 302/02
-APP_Represa_NascentePerene = 50         # Inciso I, Artigo 3º, Resolução Conama nº 302/02
-APP_Represa_NascenteIntermitente = 50   # Inciso I, Artigo 3º, Resolução Conama nº 302/02
-APP_Represa_Menor20ha = 15              # Inciso I, Artigo 3º, Resolução Conama nº 302/02
-APP_Represa_Maior20ha = 100             # Inciso I, Artigo 3º, Resolução Conama nº 302/02
-APP_Lagoa_Menor20ha = 50                # Alínea 'b', Inciso I, Artigo 3º, Resolução Conama nº 303/02
-APP_Lagoa_Maior20ha = 100               # Alínea 'b', Inciso I, Artigo 3º, Resolução Conama nº 303/02
+# Inciso I, Artigo 3º, Resolução Conama nº 302/02
+APP_Nascentes = 50
+# Alínea 'a', Inciso I, Artigo 3º, Resolução Conama nº 302/02
+APP_CursoDagua = 30
+# Alínea 'b', 'c', 'd', e 'e', Inciso I, Artigo 3º, Resolução Conama nº 302/02
+APP_RioMaior10m = 0
+# Inciso I, Artigo 3º, Resolução Conama nº 302/02
+APP_Represa_NascentePerene = 50
+# Inciso I, Artigo 3º, Resolução Conama nº 302/02
+APP_Represa_NascenteIntermitente = 50
+# Inciso I, Artigo 3º, Resolução Conama nº 302/02
+APP_Represa_Menor20ha = 15
+# Inciso I, Artigo 3º, Resolução Conama nº 302/02
+APP_Represa_Maior20ha = 1
+# Alínea 'b', Inciso I, Artigo 3º, Resolução Conama nº 303/02
+APP_Lagoa_Menor20ha = 50
+# Alínea 'b', Inciso I, Artigo 3º, Resolução Conama nº 303/02
+APP_Lagoa_Maior20ha = 100
 APP_Varzea = 30
 
 # -------------------------------------------------------------------------------------------------------
 # Print Variables
 in_pathFeatureDataSet = os.path.join(geodatabase, in_FeatureDataSet)
 out_pathFeatureDataSet = os.path.join(geodatabase, out_FeatureDataSet)
-temp_pathFeatureDataSet = os.path.join(geodatabase, in_FeatureDataSet + "_temp")
+temp_pathFeatureDataSet = os.path.join(
+    geodatabase, in_FeatureDataSet + "_temp")
 
 arcpy.Delete_management(temp_pathFeatureDataSet, 'FeatureDataset')
-arcpy.CreateFeatureDataset_management(geodatabase, in_FeatureDataSet + "_temp", in_pathFeatureDataSet)
+arcpy.CreateFeatureDataset_management(
+    geodatabase, in_FeatureDataSet + "_temp", in_pathFeatureDataSet)
 
 print 'Geodatabase: ' + geodatabase
 print 'Feature DataSet Input: ' + in_pathFeatureDataSet
@@ -123,7 +134,7 @@ if APP_RioMaior10m == 0:
         arcpy.Buffer_analysis('Hidro_Poligonos_02_Smooth',
                               'Hidro_Poligonos_03_Buffer',
                               'APP', 'FULL', 'ROUND', 'NONE')
-        
+
     except arcpy.ExecuteError:
         print arcpy.GetMessages()
 
@@ -133,7 +144,7 @@ elif APP_RioMaior10m > 0:
                               'Hidro_Poligonos_03_Buffer',
                               str(APP_RioMaior10m) + ' Meters',
                               'FULL', 'ROUND', 'NONE')
-        
+
     except arcpy.ExecuteError:
         print arcpy.GetMessages()
 
@@ -161,7 +172,7 @@ arcpy.Select_analysis(os.path.join(in_pathFeatureDataSet, 'Hidro_Poligonos'),
                       "[Tipo] = 'Nascente Intermitente'")
 arcpy.Buffer_analysis('Hidro_Poligonos_06_Select',
                       'Hidro_Poligonos_07_Buffer',
-                      str(APP_Represa_NascenteIntermitente ) + ' Meters',
+                      str(APP_Represa_NascenteIntermitente) + ' Meters',
                       'FULL', 'ROUND', 'NONE')
 
 arcpy.Select_analysis(os.path.join(in_pathFeatureDataSet, 'Hidro_Poligonos'),
@@ -264,7 +275,7 @@ arcpy.Merge_management(['Hidro_Poligonos_01_Select',
                         'Hidro_Poligonos_12_Select',
                         'Hidro_Poligonos_14_Select',
                         'Hidro_Poligonos_16_Select'],
-                        'Hidro_Poligonos_20_Merge')
+                       'Hidro_Poligonos_20_Merge')
 
 arcpy.Merge_management(['Hidro_Poligonos_01_Select',
                         'Hidro_Poligonos_06_Select',
@@ -273,7 +284,7 @@ arcpy.Merge_management(['Hidro_Poligonos_01_Select',
                         'Hidro_Poligonos_12_Select',
                         'Hidro_Poligonos_14_Select',
                         'Hidro_Poligonos_16_Select'],
-                        'Hidro_Poligonos_21_Merge')
+                       'Hidro_Poligonos_21_Merge')
 
 arcpy.Erase_analysis('APP_03_Dissolve',
                      'Hidro_Poligonos_20_Merge',
@@ -287,17 +298,23 @@ arcpy.Erase_analysis('APP_04_Dissolve',
 # Análises: Ajustando tabela de atributos
 print '## Etapa 8: Ajustando tabela de atributos'
 
-arcpy.AddField_management('APP_05_Erase', 'APP', 'TEXT', '', '', 20, '', 'NULLABLE', 'NON_REQUIRED')
-arcpy.AddField_management('APP_06_Erase', 'APP', 'TEXT', '', '', 20, '', 'NULLABLE', 'NON_REQUIRED')
+arcpy.AddField_management('APP_05_Erase', 'APP', 'TEXT',
+                          '', '', 20, '', 'NULLABLE', 'NON_REQUIRED')
+arcpy.AddField_management('APP_06_Erase', 'APP', 'TEXT',
+                          '', '', 20, '', 'NULLABLE', 'NON_REQUIRED')
 
-arcpy.CalculateField_management('APP_05_Erase','APP', repr('Sim'), 'PYTHON_9.3')
-arcpy.CalculateField_management('APP_06_Erase','APP', repr('Sim'), 'PYTHON_9.3')
+arcpy.CalculateField_management(
+    'APP_05_Erase', 'APP', repr('Sim'), 'PYTHON_9.3')
+arcpy.CalculateField_management(
+    'APP_06_Erase', 'APP', repr('Sim'), 'PYTHON_9.3')
 
 arcpy.AddField_management('APP_05_Erase', 'Area_ha', 'FLOAT')
 arcpy.AddField_management('APP_06_Erase', 'Area_ha', 'FLOAT')
 
-arcpy.CalculateField_management('APP_05_Erase','Area_ha', '!shape.area@hectares!', 'PYTHON_9.3')
-arcpy.CalculateField_management('APP_06_Erase','Area_ha', '!shape.area@hectares!', 'PYTHON_9.3')
+arcpy.CalculateField_management(
+    'APP_05_Erase', 'Area_ha', '!shape.area@hectares!', 'PYTHON_9.3')
+arcpy.CalculateField_management(
+    'APP_06_Erase', 'Area_ha', '!shape.area@hectares!', 'PYTHON_9.3')
 
 
 # -------------------------------------------------------------------------------------------------------
@@ -309,10 +326,10 @@ arcpy.MultipartToSinglepart_management('APP_06_Erase', 'APP_08_Multipart')
 arcpy.DeleteField_management('APP_07_Multipart', 'ORIG_FID')
 arcpy.DeleteField_management('APP_08_Multipart', 'ORIG_FID')
 
-arcpy.Copy_management ('APP_07_Multipart',
-                       os.path.join(out_pathFeatureDataSet, 'APP_HidroPerene'))
-arcpy.Copy_management ('APP_08_Multipart',
-                       os.path.join(out_pathFeatureDataSet, 'APP_HidroIntermitente'))
+arcpy.Copy_management('APP_07_Multipart',
+                      os.path.join(out_pathFeatureDataSet, 'APP_HidroPerene'))
+arcpy.Copy_management('APP_08_Multipart',
+                      os.path.join(out_pathFeatureDataSet, 'APP_HidroIntermitente'))
 
 
 # -------------------------------------------------------------------------------------------------------
